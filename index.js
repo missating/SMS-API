@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 import { DB, APP_PORT } from './config';
+import routes from './routes'
 
 const port = APP_PORT || 4000;
 
@@ -21,10 +22,17 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+routes(app);
+
 // Setup a default catch-all route that sends back a welcome message
 app.get('/', (req, res) => res.status(200)
   .send({
     message: 'Welcome to the SMS API'
+  }));
+
+app.use('*', (req, res) =>
+  res.send({
+    message: 'The API route you requested does not exist'
   }));
 
 app.listen(port, () => {
