@@ -1,4 +1,5 @@
 import Contact from '../models/Contact';
+import { isString } from 'util';
 
 export default class contactController {
   static registerContact(req, res) {
@@ -31,6 +32,45 @@ export default class contactController {
         });
       })
     })
-      .catch((error) => console.log(error));
+      .catch(() => res.status(500).json({
+        errors: {
+          status: '500',
+          detail: 'Internal server error'
+        }
+      }));
+  }
+
+  static viewContact(req, res) {
+    return Contact.findById({
+      _id: req.params.id
+    }).then((existinfContact) => {
+      if (!existinfContact) {
+        return res.status(404)
+          .json({
+            errors: {
+              status: '404',
+              title: 'Not Found',
+              detail: 'Cannot find a Contact with that Id'
+            }
+          })
+      }
+      Contact.findById({
+        _id: req.params.id
+      }).then((contact) => res.status(200).json({
+      data: {
+        message: 'Contact successfully found',
+        contact: {
+            name: contact.name,
+            phoneNumber: contact.phoneNumber
+          }
+        }
+      }))
+    })
+      .catch(() => res.status(500).json({
+        errors: {
+          status: '500',
+          detail: 'Internal server error'
+        }
+      }));
   }
 }
