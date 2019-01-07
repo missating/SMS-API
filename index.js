@@ -1,17 +1,33 @@
+process.env.NODE_ENV = 'development';
+
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
-import { DB, APP_PORT } from './config';
+import dotenv from 'dotenv';
+import { devDB, APP_PORT, testDB } from './config';
 import routes from './routes'
+
+dotenv.config();
 
 const port = APP_PORT || 4000;
 
 const app = express();
+let mongoDB;
+
+if (process.env.NODE_ENV === 'test') {
+  mongoDB = testDB;
+} else if (process.env.NODE_ENV === 'development') {
+  mongoDB = devDB;
+}
 
 // Connect to database
-mongoose.connect(DB, { useNewUrlParser: true });
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
+
+const db = mongoose.connection;
+db.on('error',
+  console.error.bind(console, 'MONGODB connection failed in this instance'));
 
 // Use morgan to log request in dev mode
 app.use(logger('dev'))
