@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import supertest from 'supertest';
 import mongoose from 'mongoose';
 import app from '../index';
-import {testDB} from '../config';
+import { testDB } from '../config';
 
 const request = supertest(app);
 
@@ -58,10 +58,22 @@ describe('Contact API', () => {
       .end((error, response) => {
         expect(response.statusCode).to.equal(201);
         expect(response.body).to.be.an('object');
-        console.log(response.body)
         expect(response.body.data.contact).to.have.property('id');
         expect(response.body.data.contact).to.have.property('name');
         expect(response.body.data.contact).to.have.property('phoneNumber');
+        done();
+      });
+  });
+
+  it('should not get a particular contact if the id does not exist', (done) => {
+    request.get('/api/v1/contact/5c33aec47a51821bb2d8adac')
+      .end((error, response) => {
+        expect(response.statusCode).to.equal(404);
+        expect(response.body).to.be.an('object');
+        expect(response.body.errors.title)
+          .to.equal('Not Found');
+        expect(response.body.errors.detail)
+          .to.equal('Cannot find a Contact with that Id');
         done();
       });
   });
