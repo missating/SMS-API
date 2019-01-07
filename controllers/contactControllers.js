@@ -1,5 +1,4 @@
 import Contact from '../models/Contact';
-import { isString } from 'util';
 
 export default class contactController {
   static registerContact(req, res) {

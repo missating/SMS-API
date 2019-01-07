@@ -12,9 +12,6 @@ describe('Contact API', () => {
   before((done) => {
     mongoose.connect(testDB, { useNewUrlParser: true });
     mongoose.set('useCreateIndex', true);
-    
-    const db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'Connection error'));
     done();
   });
 
