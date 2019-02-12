@@ -1,4 +1,6 @@
 import Contact from '../models/Contact';
+import Sms from '../models/Sms';
+import smsController from './smsControllers';
 
 export default class contactController {
   static registerContact(req, res) {
@@ -56,9 +58,9 @@ export default class contactController {
       Contact.findById({
         _id: req.params.id
       }).then((contact) => res.status(200).json({
-      data: {
-        message: 'Contact successfully found',
-        contact: {
+        data: {
+          message: 'Contact successfully found',
+          contact: {
             name: contact.name,
             phoneNumber: contact.phoneNumber
           }
@@ -72,4 +74,41 @@ export default class contactController {
         }
       }));
   }
-}
+
+  static removeContact(req, res) {
+    return Contact.findOneAndDelete({
+      _id: req.params.id
+    }).then((existingContact) => {
+      if (!existingContact) {
+        return res.status(404)
+          .json({
+            errors: {
+              status: '404',
+              title: 'Not Found',
+              detail: 'Cannot find a Contact with that Id'
+            }
+          })
+      }
+      Contact.findOneAndDelete({
+        _id: req.params.id
+      }).then((contact) => {
+        return Sms.deleteMany({
+          senderNumber: contact.phoneNumber
+        }).then(() => {
+          return Sms.deleteMany({
+            receiverNumber: contact.phoneNumber
+          }).then(() => {
+            return response.status(200).json({
+              message: 'Contact successfully deleted'
+            })
+          })
+        })
+      })
+      }).catch(() => res.status(500).json({
+        errors: {
+          status: '500',
+          detail: 'Internal server error'
+        }
+      }))
+    }
+  }

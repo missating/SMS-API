@@ -75,6 +75,19 @@ describe('Contact API', () => {
       });
   });
 
+  it('should not delete a contact that does not exist', (done) => {
+    request.delete('/api/v1/contact/5c62f9e891085a1eacbad8de')
+      .end((error, response) => {
+        expect(response.statusCode).to.equal(404);
+        expect(response.body).to.be.an('object');
+        expect(response.body.errors.title)
+          .to.equal('Not Found');
+        expect(response.body.errors.detail)
+          .to.equal('Cannot find a Contact with that Id');
+        done();
+      });
+  });
+
   after((done) => {
     mongoose.connection.dropDatabase(() => {
       mongoose.connection.close(done);
