@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const contactSchema = new mongoose.Schema({
-  name: { type: String },
+  name: { type: String, required: true },
   phoneNumber: { type: String, unique: true, required: true },
   sms: { type: [mongoose.Schema.Types.ObjectId], ref: 'Sms' }
 });

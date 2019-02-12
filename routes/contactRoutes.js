@@ -8,4 +8,7 @@ export default function contactRoutes(app) {
 
   // view a contact details
   app.get('/api/v1/contact/:id', contact.viewContact);
+
+  // delete a contact 
+  app.delete('/api/v1/contact/:id', contact.removeContact)
 }
