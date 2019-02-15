@@ -1,7 +1,7 @@
 {
   "name": "sms-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "An sms management API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec babel-node index.js",
@@ -18,7 +18,7 @@
     "url": "git+https://github.com/missating/SMS-API.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vanessa Ating <atingenkay@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/missating/SMS-API/issues"

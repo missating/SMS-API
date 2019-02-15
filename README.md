@@ -71,7 +71,7 @@ that runs both on Node.js and in the browser) and Chai (A BDD/TDD assertion libr
 
 * POST `localhost:4000/api/v1/contact/register`
 
-  * To register as a contact, hit this endpoint via postman and supply the `Name`, and `phoneNumber` properties to the request body
+  * To register as a contact, hit this endpoint via postman and supply the `name`, and `phoneNumber` properties to the request body
 
 * GET `localhost:4000/api/v1/contact/:id`
   * To view your contact details, supply your userId i.e id as a params to the route.
